@@ -1,0 +1,12 @@
+AzureActivity
+// Filter out GUID callers i.e. policy deployments and/or app registrations from Azure DevOps Service Connections.
+| extend GUID = Caller matches regex @"^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$"
+| where GUID != true
+// We only want to know about deployments ...
+| where OperationName contains "Deployment"
+// ... which were successful
+| extend statusCode_ = tostring(parse_json(Properties).statusCode)
+| where statusCode_ == "Created"
+// Create clean overview of what was deploymend and by whom
+| project TimeGenerated, Caller, GUID, CallerIpAddress, OperationNameValue, SubscriptionId, ResourceGroup, Resource
+| sort by TimeGenerated
