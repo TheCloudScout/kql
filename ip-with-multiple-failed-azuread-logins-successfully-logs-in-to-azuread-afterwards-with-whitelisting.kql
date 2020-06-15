@@ -14,20 +14,8 @@ let suspicious_signins = SigninLogs
     // Exclude localhost addresses to reduce the chance of FPs
     | where IPAddress != "127.0.0.1"
     // Exclude our own trusted IP addresses
-    | extend originatedFromTrustedIp = case(parse_ipv4(IPAddress) between ( parse_ipv4("141.93.12.1").. parse_ipv4("141.93.12.254")),"NL",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("141.93.16.1").. parse_ipv4("141.93.19.254")),"NL",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("141.93.23.1").. parse_ipv4("141.93.23.254")),"NL",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("141.93.32.1").. parse_ipv4("141.93.32.254")),"NL",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("141.93.35.1").. parse_ipv4("141.93.35.254")),"NL",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("178.20.160.1").. parse_ipv4("178.20.167.254")),"SE",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("193.106.252.1").. parse_ipv4("193.106.255.254")),"GR",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("194.30.236.81").. parse_ipv4("194.30.236.86")),"GR",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("194.78.122.1").. parse_ipv4("194.78.122.254")),"BE",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("195.167.38.1").. parse_ipv4("195.167.38.30")),"GR",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("212.146.111.65").. parse_ipv4("212.146.111.70")),"RO",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("213.195.198.129").. parse_ipv4("213.195.198.190")),"CZ",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("31.161.108.17").. parse_ipv4("31.161.108.30")),"NL",
-                                            parse_ipv4(IPAddress) between ( parse_ipv4("81.12.222.241").. parse_ipv4("81.12.222.254")),"RO",
+    | extend originatedFromTrustedIp = case(parse_ipv4(IPAddress) between ( parse_ipv4("10.10.10.1").. parse_ipv4("10.10.10.254")),"NL",
+                                            parse_ipv4(IPAddress) between ( parse_ipv4("10.10.20.100").. parse_ipv4("10.10.20.110")),"NL"
                                     //else
                                             strcat("Unknown IP"))
     | where originatedFromTrustedIp == "Unknown IP"
